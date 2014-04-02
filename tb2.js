@@ -26,9 +26,15 @@ setTimeout(function() {
 		console.log('Connected to server');
 		client.emit('client-connect', { shared_secret: cfg.shared_secret });
 		client.emit('client-write', "JOIN #foo\n");
+		client.emit('get-network-info');
 
 		// For each network, initiate a connection
 //		client.emit('connect-irc-network', cfg.network);
+	});
+
+	client.on('network-info', function(network) {
+		console.log('Client received network info');
+		console.log(network);
 	});
 
 	client.on('irc-line', function(data) {

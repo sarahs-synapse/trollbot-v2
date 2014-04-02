@@ -30,6 +30,13 @@ setTimeout(function() {
 		client.emit('connect-irc-network', cfg.network);
 	});
 
+	client.on('network-info', function(network) {
+		console.log('Client received network info');
+		console.log(network);
+	});
+
+
+
 	client.on('irc-line', function(data) {
 		console.log('client received irc line');
 		console.log(data);
