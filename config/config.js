@@ -8,14 +8,14 @@ module.exports = {
 	shared_secret: "99c43b7f66d3cda9ab984772c3d62baa7bdc2ba3bb61229337354c0111625e68",
 
 	network: {
-		name: 'local net',
-		nick: 'nodebotv2',
-		realname: 'Node.JS Bot SocketLayer',
-		ident: 'nodebot',
+		name: 'DALnet',
+		nick: 'Discouragement',
+		realname: 'Kicks the llama\'s ass.',
+		ident: 'discourage',
 		
 		servers: [
 			{
-				hostname: "127.0.0.1",
+				hostname: "swiftco.dal.net",
 				port: 6667
 			}
 		]
