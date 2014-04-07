@@ -1,18 +1,25 @@
 /**
- * TrollBot V2.0
+ * Trollbot V2
  *
- * @author Benjamin Burkhart <benburkhart1@gmail.com>
+ * An IRC bot.
  */
-// Flow
-// Get Configuration
-var cfg = require('./config/config.js');
+if (process.argv.length != 3)
+{
+	console.log('Syntax:');
+	console.log(process.argv[0] + ' ' + process.argv[1] + ' <network>');
+	process.exit(1);
+}
+
+console.log("Trollbot V2");
+console.log("-----------");
+
+var cfg = require('./config/' + process.argv[2] + '.js');
 
 // Start socket layer
-//var sl = require('./lib/ircsocketlayer.js');
-//var layer = new sl(cfg.shared_secret, cfg.listener_port);
-//layer.listen();
+var sl = require('./lib/ircsocketlayer.js');
+var layer = new sl(cfg.shared_secret, cfg.listener_port);
+layer.listen();
 
-// Start bot layer after 1 second
 setTimeout(function() {
 	var sio = require('socket.io-client');
 
@@ -28,18 +35,14 @@ setTimeout(function() {
 
 		// For each network, initiate a connection
 		client.emit('connect-irc-network', cfg.network);
+
+		// We no longer need this connection
+		client.disconnect();
 	});
 
 	client.on('network-info', function(network) {
 		console.log('Client received network info');
 		console.log(network);
-	});
-
-
-
-	client.on('irc-line', function(data) {
-		console.log('client received irc line');
-		console.log(data);
 	});
 
 	client.on('error', function(err) {
