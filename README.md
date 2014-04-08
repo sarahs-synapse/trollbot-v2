@@ -13,3 +13,34 @@ may crash. It also allows me to have many different things connect into the bot'
 You could have 200 different bots running represented only by one nickname, fancy that.
 
 
+
+### Modules:
+
+Modules connect into the IRC socket layer. Modules can request information from each other
+and they all receive IRC events and can handle them as they see fit.
+
+
+```
+.__________. ._________. ._________.
+|          | |         | |         |
+| Channels | | Logger  | | Weather |
+|__________| |_________| |_________|
+           \      |      /
+            \     |     /       
+             \    |    /    
+              \   |   /
+               \  |  /
+                \ | /
+                 \|/
+              .___|____.
+              |        |
+              | Socket |
+              | Layer  |
+              |________|
+                  |
+                  | 
+           .______|______.
+           |             |
+           | IRC Network |
+           |_____________|
+```
