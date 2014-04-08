@@ -46,5 +46,6 @@ setTimeout(function() {
 	});
 
 	client.on('error', function(err) {
+		console.log(err);
 	});
 }, 1000);
