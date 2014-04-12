@@ -18,6 +18,11 @@ module.exports = {
 				hostname: "chat.freenode.net",
 				port: 6667
 			}
+		],
+
+		channels: [
+			'##subreddit',
+			'#poutineworld'
 		]
 	}
 };

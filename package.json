@@ -17,6 +17,8 @@
     "url": "git@github.com:benburkhart1/trollbot-v2.git"
   },
   "dependencies": {
+		"minimist": "0.0.8",
+		"trollbot-v2-client": "git+ssh://git@github.com:benburkhart1/trollbot-v2-client.git",
 		"socket.io": "0.9.16",
 		"socket.io-client": "0.9.16"
   },

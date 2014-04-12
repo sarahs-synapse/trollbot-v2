@@ -18,6 +18,13 @@ module.exports = {
 				hostname: "swiftco.dal.net",
 				port: 6667
 			}
+		],
+		
+		channels: [
+			'#coffee-talk',
+			'#poutineworld',
+			'#2600',
+			'#php'
 		]
 	}
 };

@@ -18,6 +18,13 @@ module.exports = {
 				hostname: "127.0.0.1",
 				port: 6667
 			}
+		],
+		
+		channels: [
+			'#coffee-talk',
+			'#poutineworld',
+			'#2600',
+			'#php'
 		]
 	}
 };

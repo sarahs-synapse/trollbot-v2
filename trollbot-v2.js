@@ -1,51 +1,57 @@
-/**
- * Trollbot V2
- *
- * An IRC bot.
- */
-if (process.argv.length != 3)
-{
-	console.log('Syntax:');
-	console.log(process.argv[0] + ' ' + process.argv[1] + ' <network>');
-	process.exit(1);
-}
+var cfg  = require('./bootstrap-cli.js').config;
+var irc  = require('./lib/irc.js');
+var ChanLib = require('./lib/channels.js');
+
 
 console.log("Trollbot V2");
 console.log("-----------");
 
-var cfg = require('./config/' + process.argv[2] + '.js');
+console.log('Starting Listening Layer.');
 
 // Start socket layer
 var sl = require('./lib/ircsocketlayer.js');
 var layer = new sl(cfg.shared_secret, cfg.listener_port);
 layer.listen();
 
+console.log('Waiting 1 second to initiate network connection.');
+
 setTimeout(function() {
-	var sio = require('socket.io-client');
+	var tbc  = require('trollbot-v2-client');
 
-	var client = sio.connect('tcp://' + cfg.listener_host + ':' + cfg.listener_port, function( err ) {
-		if (err)
-			console.log(err);
-	});
+	var tclient = new tbc(cfg.listener_host, cfg.listener_port, cfg.shared_secret);
 
-	client.on('connect', function() {
-		// TODO: Identify this client
-		console.log('Connected to server');
-		client.emit('client-connect', { shared_secret: cfg.shared_secret });
+	tclient.getTSock(function(err, client) {
+		client.emit('connect-irc-network', cfg.network); 
 
-		// For each network, initiate a connection
-		client.emit('connect-irc-network', cfg.network);
+		client.on('irc-line', function(data) {
+			var pkt = irc.parseLine(data);
 
-		// We no longer need this connection
-		client.disconnect();
-	});
+			switch (pkt.command)
+			{
+				// 376 - end of MOTD
+				case '376':
+					// Going to go ahead and join all channels at the end of the MOTD
+					var chan = new ChanLib(client);
+					
+					cfg.network.channels.forEach(function(channel) { 
+						chan.join(channel);
+					});
 
-	client.on('network-info', function(network) {
-		console.log('Client received network info');
-		console.log(network);
-	});
-
-	client.on('error', function(err) {
-		console.log(err);
+					break;
+				case 'PRIVMSG':
+					if (irc.isCtcp(pkt.rest))
+					{
+						var ctcp = irc.parseCtcp(pkt.rest);
+						switch (ctcp.ctcp)
+						{
+							case 'VERSION':
+								client.emit('client-write', "NOTICE " + pkt.prefix.nickname + " :\001VERSION TrollBot V2.0 http://www.trollbot.org - Written in Node.JS!\001\n");
+								break;
+						}
+						console.log('CTCP WAS ', ctcp);
+					}
+					break;
+			}
+		});
 	});
 }, 1000);
