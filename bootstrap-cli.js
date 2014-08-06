@@ -2,7 +2,6 @@
  * The purpose of this file is to get rid of boilerplate
  */
 
-
 // All CLI apps use node app.js <network>
 var argv = require('minimist')(process.argv.slice(2));
 

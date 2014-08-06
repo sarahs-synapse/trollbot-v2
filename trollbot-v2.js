@@ -6,14 +6,14 @@ var ChanLib = require('./lib/channels.js');
 console.log("Trollbot V2");
 console.log("-----------");
 
-console.log('Starting Listening Layer.');
+console.log('Starting Core Layer.');
 
-// Start socket layer
-var sl = require('./lib/ircsocketlayer.js');
-var layer = new sl(cfg.shared_secret, cfg.listener_port);
-layer.listen();
+// Start core layer
+var core  = require('./lib/core.js');
+var tb    = new core(cfg.shared_secret, cfg.listener_port);
+tb.listen();
 
-console.log('Waiting 1 second to initiate network connection.');
+console.log('Waiting 1 second to initiate network connection to Trollbot v2 server.');
 
 setTimeout(function() {
 	var tbc  = require('trollbot-v2-client');
@@ -38,7 +38,9 @@ setTimeout(function() {
 					});
 
 					break;
+				// Message, to the bot or a channel
 				case 'PRIVMSG':
+					// Check 2 bytes before going down this route
 					if (irc.isCtcp(pkt.rest))
 					{
 						var ctcp = irc.parseCtcp(pkt.rest);
@@ -50,6 +52,11 @@ setTimeout(function() {
 						}
 						console.log('CTCP WAS ', ctcp);
 					}
+					break;
+				// Either another person joined a channel, or the bot did
+				case 'JOIN':
+					// If it's another person
+					// If it's the bot
 					break;
 			}
 		});
