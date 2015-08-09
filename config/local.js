@@ -2,6 +2,7 @@ module.exports = {
 	listener_port: 7181,
 	listener_host_listen: '0.0.0.0',	
 	listener_host: '127.0.0.1',	
+	module_directory: '/home/ben/Projects/trollbot/trollbot-v2-modules',
 	
 	// This is so a client can authenticate with the listener to be authorized to hear
 	// events as well as be able to issue commands

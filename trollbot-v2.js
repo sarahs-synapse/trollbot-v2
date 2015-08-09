@@ -10,7 +10,7 @@ console.log('Starting Core Layer.');
 
 // Start core layer
 var core  = require('./lib/core.js');
-var tb    = new core(cfg.shared_secret, cfg.listener_port);
+var tb    = new core(cfg, cfg.shared_secret, cfg.listener_port);
 tb.listen();
 
 console.log('Waiting 1 second to initiate network connection to Trollbot v2 server.');
@@ -61,4 +61,15 @@ setTimeout(function() {
 			}
 		});
 	});
+
+/*
+	// Load the modules
+	if (cfg.network.modules && cfg.network.modules.length)
+	{
+		cfg.network.modules.forEach(function(module) {
+			var mod = new (require(cfg.module_directory + '/' + module + '.js'))(cfg);
+
+			mod.load();
+		});
+	}*/
 }, 1000);
